@@ -10,7 +10,7 @@ set -e
 TMUX_VERSION=1.8
 
 # create our directories
-mkdir tmux_tmp
+mkdir $HOME/tmux_tmp
 cd $HOME/tmux_tmp
 
 # download source files for tmux, libevent, and ncurses
