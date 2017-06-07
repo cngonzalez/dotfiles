@@ -14,9 +14,9 @@ mkdir tmux_tmp
 cd $HOME/tmux_tmp
 
 # download source files for tmux, libevent, and ncurses
-curl -o tmux-2.3.tar.gz https://github.com/tmux/tmux/releases/download/2.3/tmux-2.3.tar.gz
-curl -o libevent-2.0.19-stable.tar.gz https://github.com/downloads/libevent/libevent/libevent-2.0.19-stable.tar.gz
-curl -o ncurses-5.9.tar.gz ftp://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz
+curl -LO https://github.com/tmux/tmux/releases/download/2.3/tmux-2.3.tar.gz
+curl -LO https://github.com/downloads/libevent/libevent/libevent-2.0.19-stable.tar.gz
+curl -LO ftp://ftp.gnu.org/gnu/ncurses/ncurses-5.9.tar.gz
 
 # extract files, configure, and compile
 
