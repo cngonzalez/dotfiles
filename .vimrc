@@ -19,25 +19,24 @@ endif
 if $TERM == "screen"
     set t_Co=256
 endif
-" let Vundle manage Vundle, required
 
+" let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
+Plugin 'flazz/vim-colorschemes'
+" Remaps navigational keys (ctrl-h et al) to go between tmux panels instead.
 Plugin 'christoomey/vim-tmux-navigator'
-" Plugin 'christoomey/vim-system-copy'
+
+" Supposedly allows execution of code in a separate tmux pane, doesn't seem to
+" work.
+Plugin 'vimux'
+
+" File tree
 Plugin 'scrooloose/nerdtree'
 Plugin 'jistr/vim-nerdtree-tabs'
-" Plugin 'Syntastic'
-Plugin 'Vim-R-plugin'
-Plugin 'vimux'
-"Plugin 'Lokaltog/vim-powerline'
 Plugin 'vim-airline/vim-airline'
 Bundle 'edkolev/tmuxline.vim'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
-Plugin 'othree/html5.vim'
-Plugin 'godlygeek/tabular'
-Plugin 'majutsushi/tagbar'
-"Plugin 'Yggdroot/indentLine'
 
 Plugin 'nathanaelkane/vim-indent-guides'
 "
@@ -46,35 +45,38 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'edkolev/promptline.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'kien/ctrlp.vim'
+Plugin 'jelera/vim-javascript-syntax'
 
 "Plugin 'vim-scripts/Conque-Shell'
 Plugin 'ervandew/supertab'
 " Plugin 'vim-scripts/AutoComplPop'
 "
 " Plugin 'valloric/youcompleteme'
-Bundle 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-rails'
-Plugin 'roosta/srcery'
+"Bundle 'vim-ruby/vim-ruby'
+"Plugin 'tpope/vim-rails'
+"Plugin 'roosta/srcery'
 Plugin 'alvan/vim-closetag'
 
 "Plugin 'mattn/emmet-vim'
 "
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-endwise'
-
+Plugin 'cngonzalez/vim-ipython'
+Plugin 'godlygeek/tabular'
+Plugin 'majutsushi/tagbar'
 
 " Track the engine.
 "Plugin 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plugin 'honza/vim-snippets'
-" Plugin 'Shougo/neocomplete.vim'
 
 Plugin 'sheerun/vim-polyglot'
 Plugin 'ap/vim-css-color'
-Plugin 'epilande/vim-react-snippets'
+" Plugin 'epilande/vim-react-snippets'
 Plugin 'pangloss/vim-javascript'
 Plugin 'mxw/vim-jsx'
+Plugin 'posva/vim-vue'
 " Plugin 'MarcWeber/vim-addon-mw-utils'
 " Plugin 'tomtom/tlib_vim'
 " Plugin 'garbas/vim-snipmate'
@@ -174,7 +176,13 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 let g:UltiSnipsEditSplit="vertical"
 
 let g:closetag_filenames = "*.erb,*.html.erb,*.html,*.xhtml,*.phtml"
+
+" Don't look in useless places for ctrl-p
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+
+" stop vue plugin from being the worst thing ever
+let g:vue_disable_pre_processors=1
 
 
 set omnifunc=syntaxcomplete#Complete
@@ -196,32 +204,8 @@ let g:airline_powerline_fonts = 1
 "Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 " let g:acp_enableAtStartup = 0
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
 " Use smartcase.
-let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
-" let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#sources#syntax#min_keyword_length = 2
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
 
 " " Recommended key-mappings.
 " " <CR>: close popup and save indent.
@@ -234,18 +218,13 @@ inoremap <expr><C-l>     neocomplete#complete_common_string()
 " " <TAB>: completion.
 " inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " " <C-h>, <BS>: close popup and delete backword char.
-" inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-" inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " " Close popup by <Space>.
 " "inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
 
 " " AutoComplPop like behavior.
-" "let g:neocomplete#enable_auto_select = 1
 
 " " Shell like behavior(not recommended).
 " "set completeopt+=longest
-" "let g:neocomplete#enable_auto_select = 1
-" "let g:neocomplete#disable_auto_complete = 1
 " "inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
 "
 " Enable omni completion.
@@ -267,28 +246,6 @@ augroup Group1
 augroup END
 " autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 " Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
-endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
-if !exists('g:neocomplete#force_omni_input_patterns')
-  let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
-let g:neocomplete#force_omni_input_patterns.ruby = '[^. *\t]\.\w*\|\h\w*::'
-
-
-
-
-
-
-
-
 
 
 let g:airline#extensions#tabline#enabled = 1
@@ -327,9 +284,18 @@ let g:promptline_theme = 'airline'
 " let g:promptline_theme = 'jelly'
 "colorscheme solarized
 "colorscheme srcery
-colorscheme deep-space
+"colorscheme inori
+"colorscheme evening
+"colorscheme adventurous
+"colorscheme earthburn
+"colorscheme earendel
+"colorscheme mango
+"colorscheme Revolution
+"colorscheme blazer
+colorscheme znake
 highlight Normal ctermbg=NONE
 highlight nonText ctermbg=NONE
+highlight Comment cterm=bold
 
 " colorscheme gruvbox
 " colorscheme deep-space
@@ -340,7 +306,7 @@ hi Normal ctermbg=none
 " set background=dark
 "hi Normal ctermbg=none
 
-set cursorline
+"set cursorline
 "hi CursorLine cterm=bold ctermbg=0
 "hi Comment  guifg=#80a0ff ctermfg=7
 "highlight LineNr ctermfg=red ctermbg=none
@@ -434,8 +400,6 @@ inoremap ∑ <C-o>w
 inoremap ∫ <C-o>b
 inoremap ø <C-o>o
 inoremap Ø <C-o>O
-
-nnoremap <CR> o<ESC>
 
 inoremap <C-z> <space>
 nnoremap <C-z> <space>
