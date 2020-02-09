@@ -77,32 +77,10 @@ function extract () {
 #sshkeyring
 #DON'T DO THIS, YOU HAVE TOO MANY SSH KEYS
 
-# Aliases
-# =====================
-  # CKM connections
-  alias bastion="ssh-agent && ssh-add ~/.ssh/iq-toolkit-test.pem && ssh -L 3398:10.180.191.166:3389 -A cgonzalez26@bastion.iq-toolkit.com"
-  alias ckm_website_0="ssh-agent && ssh-add ~/.ssh/ckm-public-website-dev.pem && ssh ubuntu@34.227.173.31"
-  alias ckm_website_1="ssh-agent && ssh-add ~/.ssh/ckm-public-website-dev.pem && ssh ubuntu@204.236.202.157"
-  alias ckm_website_dev="ssh-agent && ssh-add ~/.ssh/ckm-public-website-dev.pem && ssh ubuntu@34.239.102.207"
-  alias gitlab="ssh-agent && ssh-add ~/.ssh/INF_GitRepo.pem && ssh ubuntu@10.39.40.114"
-
-  #QOL aliases
-  alias runbuild_tk="git clean -xfd && ./gradlew webpack && ./gradlew bootRun"
-  alias export_tk="export SPRING_PROFILES_ACTIVE=\"security-db,fixtures\""
-  alias clean_win="find . -type f -print0 | xargs -0 dos2unix"
-  alias go_blbg="cd ~/code/blbg-application-carolina/"
-  alias blbg_vue="cd ~/code/blbg-application-carolina/src/main/public/blbg"
-
-  # Docker
-  alias docker-destroy="sh ~/bash_scripts/docker-destroy.sh"
-
 # Case-Insensitive Auto Completion
 bind "set completion-ignore-case on"
 
-export PATH="/USERS/cgonzalez/npm:$PATH"
-export PATH="/USERS/cgonzalez/local/bin:$PATH"
-export PATH="/USERS/cgonzalez/anaconda3/bin:$PATH"
+#export PATH="/USERS/carolinagonzalez/npm:$PATH"
+export PATH="~USERS/carolinagonzalez/local/bin:$PATH"
+#export PATH="/USERS/carolinagonzalez/anaconda3/bin:$PATH"
 
-source $HOME/.rvm/scripts/rvm
-
-. /Users/cgonzalez/anaconda3/etc/profile.d/conda.sh
