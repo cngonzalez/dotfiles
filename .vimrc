@@ -32,51 +32,67 @@ Plugin 'vimux'
 
 " File tree
 Plugin 'scrooloose/nerdtree'
-Plugin 'jistr/vim-nerdtree-tabs'
+" Plugin 'jistr/vim-nerdtree-tabs'
+Plugin 'kien/ctrlp.vim'
+
+" customize interface
+" Bundle 'edkolev/tmuxline.vim'
 Plugin 'vim-airline/vim-airline'
-Bundle 'edkolev/tmuxline.vim'
+Plugin 'vim-airline/vim-airline-themes'
+" Plugin 'edkolev/promptline.vim'
+Plugin 'airblade/vim-gitgutter'
+
+" better vim controls
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-repeat'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-endwise'
+Plugin 'ervandew/supertab'
+Plugin 'alvan/vim-closetag'
 
+" formatting code files
 Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'godlygeek/tabular'
+"Plugin 'mattn/emmet-vim'
 "
-Plugin 'vim-airline/vim-airline-themes'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'edkolev/promptline.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'kien/ctrlp.vim'
-Plugin 'jelera/vim-javascript-syntax'
+" Plugin 'tpope/vim-fugitive'
+"
+" js/ts/jsx/tsx tooling
+" Plugin 'HerringtonDarkholme/yats.vim'
+" Plugin 'leafgarland/typescript-vim'
+" Plugin 'jelera/vim-javascript-syntax'
+" Plugin 'pangloss/vim-javascript'
+" Plugin 'leafgarland/typescript-vim' " TypeScript syntax
+" Plugin 'maxmellon/vim-jsx-pretty'   " JS and JSX syntax
+" Plugin 'sheerun/vim-polyglot'
+" Plugin 'mxw/vim-jsx'
+Plugin 'dense-analysis/ale'
+Plugin 'github/copilot.vim'
+
 
 "Plugin 'vim-scripts/Conque-Shell'
-Plugin 'ervandew/supertab'
 " Plugin 'vim-scripts/AutoComplPop'
 "
+" other lang / tooling specific stuff for things i don't code in anymore
 " Plugin 'valloric/youcompleteme'
 "Bundle 'vim-ruby/vim-ruby'
 "Plugin 'tpope/vim-rails'
 "Plugin 'roosta/srcery'
-Plugin 'alvan/vim-closetag'
+" Plugin 'cngonzalez/vim-ipython'
+" Plugin 'sheerun/vim-polyglot'
+" Plugin 'posva/vim-vue'
 
-"Plugin 'mattn/emmet-vim'
-"
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-endwise'
-Plugin 'cngonzalez/vim-ipython'
-Plugin 'godlygeek/tabular'
+" i need to get better at ctags generally
 Plugin 'majutsushi/tagbar'
 
 " Track the engine.
 "Plugin 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
-Plugin 'honza/vim-snippets'
+" Plugin 'honza/vim-snippets'
 
-Plugin 'sheerun/vim-polyglot'
 Plugin 'ap/vim-css-color'
 " Plugin 'epilande/vim-react-snippets'
-Plugin 'pangloss/vim-javascript'
-Plugin 'mxw/vim-jsx'
-Plugin 'posva/vim-vue'
 " Plugin 'MarcWeber/vim-addon-mw-utils'
 " Plugin 'tomtom/tlib_vim'
 " Plugin 'garbas/vim-snipmate'
@@ -175,7 +191,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
 
-let g:closetag_filenames = "*.erb,*.html.erb,*.html,*.xhtml,*.phtml"
+let g:closetag_filenames = "*.erb,*.html.erb,*.html,*.xhtml,*.phtml, *.tsx, *.jsx"
 
 " Don't look in useless places for ctrl-p
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
@@ -232,17 +248,17 @@ let g:airline_powerline_fonts = 1
 augroup Group1
   autocmd!
   autocmd FileType * setlocal omnifunc=syntaxcomplete#Complete
-  autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+  " autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
   autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
   autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
   autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
   autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
   autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
-  autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 0
-  autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
-  autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
-  autocmd FileType ruby compiler ruby
+  " autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 0
+  " autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
+  " autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
+  " autocmd FileType ruby compiler ruby
 augroup END
 " autocmd FileType ruby let g:SuperTabDefaultCompletionType = "context"
 " Enable heavy omni completion.
@@ -283,19 +299,20 @@ let g:airline_theme='powerlineish'
 let g:promptline_theme = 'airline'
 " let g:promptline_theme = 'jelly'
 "colorscheme solarized
-"colorscheme srcery
-"colorscheme inori
-"colorscheme evening
+" colorscheme srcery
+" colorscheme inori
+" colorscheme evening
 "colorscheme adventurous
 "colorscheme earthburn
 "colorscheme earendel
-"colorscheme mango
+colorscheme mango
 "colorscheme Revolution
 "colorscheme blazer
-colorscheme znake
-highlight Normal ctermbg=NONE
-highlight nonText ctermbg=NONE
-highlight Comment cterm=bold
+" colorscheme znake
+
+" highlight nonText ctermbg=NONE
+" highlight Comment cterm=bold
+" hi def link jsObjectKey Label
 
 " colorscheme gruvbox
 " colorscheme deep-space
@@ -429,25 +446,25 @@ function! P_Compile()
   endif
 endfunc
 
-nmap <leader>q  :w \| call VimuxRunCommand(P_Compile()) <CR>
-nmap <leader>k  :w \| call VimuxRunCommand("!!") <CR>
-nmap <leader>s  :w \| call VimuxRunCommand("rspec --f-f") <CR>
-nmap <leader>t  :w \| call VimuxRunCommand("learn") <CR>
+" nmap <leader>q  :w \| call VimuxRunCommand(P_Compile()) <CR>
+" nmap <leader>k  :w \| call VimuxRunCommand("!!") <CR>
+" nmap <leader>s  :w \| call VimuxRunCommand("rspec --f-f") <CR>
+" nmap <leader>t  :w \| call VimuxRunCommand("learn") <CR>
 "nmap <leader>S :w \| call VimuxRunCommand("learn && learn submit && exit") <CR>
-nmap <leader>Q  :w \| call VimuxRunCommand(" rspec " .expand('%:p:h'). "/../spec/*" .expand('%:t:r')."*") <CR>
-nmap <leader>1q :w \| call VimuxRunCommand(" rspec " .expand('%:p:h'). "/../spec/*" .expand('%:t:r')."* --f-f") <CR>
-nmap <leader>1s :call VimuxRunCommand(" rspec " .expand('%:p'). ":".line('.')) <CR>
+" nmap <leader>Q  :w \| call VimuxRunCommand(" rspec " .expand('%:p:h'). "/../spec/*" .expand('%:t:r')."*") <CR>
+" nmap <leader>1q :w \| call VimuxRunCommand(" rspec " .expand('%:p:h'). "/../spec/*" .expand('%:t:r')."* --f-f") <CR>
+" nmap <leader>1s :call VimuxRunCommand(" rspec " .expand('%:p'). ":".line('.')) <CR>
 
 "db/schema.rb
-nmap <leader>db :call VimuxRunCommand(" ccat db/schema.rb ") <CR>
+" nmap <leader>db :call VimuxRunCommand(" ccat db/schema.rb ") <CR>
 
 "rake routes
-nmap <leader>dr :call VimuxRunCommand(" rake routes ") <CR>
+" nmap <leader>dr :call VimuxRunCommand(" rake routes ") <CR>
 
-nmap <leader>pry :call VimuxRunCommand(" pry ") <CR>
-nmap <leader>pe :call VimuxRunCommand(" exit ") <CR>
-nmap <leader>r :call VimuxRunCommand(getline('.') ." ") <CR>
-vmap <leader>r :call VimuxRunCommand(getline('.') ." ") <CR>
+" nmap <leader>pry :call VimuxRunCommand(" pry ") <CR>
+" nmap <leader>pe :call VimuxRunCommand(" exit ") <CR>
+" nmap <leader>r :call VimuxRunCommand(getline('.') ." ") <CR>
+" vmap <leader>r :call VimuxRunCommand(getline('.') ." ") <CR>
 
 "retab
 nmap <C-w>t :set tabstop=2 \| retab! \| set tabstop=4 <cr>
@@ -469,8 +486,8 @@ endfunc
 nnoremap <leader>z :call NumberToggle()<cr>
 
 " Source a global configuration file if available
-if filereadable("/etc/vim/vimrc.local")
-  source /etc/vim/vimrc.local
-endif
+" if filereadable("/etc/vim/vimrc.local")
+"   source /etc/vim/vimrc.local
+" endif
 
 " set guifont=DejaVu\ Sans\ Mono\ for\ Powerline:h12
